@@ -4,7 +4,7 @@
 #include "uart.h"
 #include "mp3.h"
 
-//第一个房间过来的信号 开始计时
+//口令输入
 sbit FROM_ROOM1 = P0^0;
 sbit LIGHT_1 = P0^1;
 sbit LIGHT_2 = P0^2;
@@ -16,15 +16,9 @@ sbit LIGHT_INPUT_2 = P1^2;
 sbit LIGHT_INPUT_3 = P1^3;
 sbit LIGHT_INPUT_4 = P1^4;
 
-sbit HUO_1 = P0^6;
-sbit HUO_2 = P0^7;
-sbit HUO_3 = P1^5;
-sbit HUO_4 = P1^6;
-sbit HUO_5 = P1^7;
-sbit HUO_6 = P2^0;
-sbit HUO_7 = P2^1;
-sbit HUO_8 = P2^2;
-sbit HUO_9 = P2^3;
+
+
+sbit TO_BOARD_2 = P0^6;
 
 sbit GAME_B_BTN1 = P2^4;
 sbit GAME_B_BTN2 = P2^5;
@@ -55,29 +49,20 @@ void init()
 	LIGHT_2 = 1;
 	LIGHT_3 = 1;
 	LIGHT_4 = 1;
-	LIGHT_INPUT_1 = 0;
-	LIGHT_INPUT_2 = 0;
-	LIGHT_INPUT_3 = 0;
-	LIGHT_INPUT_4 = 0;
-	ABC_SWITCH = 0;
+	LIGHT_INPUT_1 = 1;
+	LIGHT_INPUT_2 = 1;
+	LIGHT_INPUT_3 = 1;
+	LIGHT_INPUT_4 = 1;
+	ABC_SWITCH = 1;
 	
-	HUO_1 = 0;
-	HUO_2 = 0;
-	HUO_3 = 0;
-	HUO_4 = 0;
-	HUO_5 = 0;
-	HUO_6 = 0;
-	HUO_7 = 0;
-	HUO_8 = 0;
-	HUO_9 = 0;
 	GAME_B_BTN1 = 0;
 	GAME_B_BTN2 = 0;
-	GAME_B_LOCK = 0;
+	GAME_B_LOCK = 1;
 	
 	GAME_C_1 = 0;
 	GAME_C_2 = 0;
 	
-	ROOM_3_DOOR = 0;
+	ROOM_3_DOOR = 1;
 }
 void main()
 {
@@ -236,10 +221,10 @@ void gameB()
 		}
 	}
 	
-	if(GAME_B_BTN1 == 0)
+	if(GAME_B_BTN2 == 0)
 	{
 		delay_ms(20);
-		if(GAME_B_BTN1 == 1)
+		if(GAME_B_BTN2 == 1)
 		{
 			btn = 2;
 		}
@@ -261,7 +246,7 @@ void gameB()
 				if(answerIndex == answerLength - 1)
 				{
 					i = TICKER;	//计时器归0
-					GAME_B_LOCK = 1;//电磁锁断电
+					GAME_B_LOCK = 0;//电磁锁断电
 					gameStep = 3;
 					return;
 				}
@@ -286,7 +271,7 @@ void gameC()
 		LIGHT_2 = 1;
 		LIGHT_3 = 1;
 		LIGHT_4 = 1;
-		ROOM_3_DOOR = 1;
+		ROOM_3_DOOR = 0;
 	}
 }
 

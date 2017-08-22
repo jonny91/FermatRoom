@@ -9,6 +9,7 @@ sbit INPUT_B = P0^1;
 sbit INPUT_C = P0^2;
 
 sbit OUTPUT_DOOR = P0^3;
+
 void init()
 {
 	INPUT_A = 0;
