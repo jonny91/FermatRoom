@@ -12,7 +12,7 @@ unsigned char buf;
 void uart_init(void)				//串口初始化
 {
  EA=0; //暂时关闭中断
- TMOD=0X20;			/*TMOD^7 GATE=0    计数器1不受外部中断影响
+ TMOD |=0X20;			/*TMOD^7 GATE=0    计数器1不受外部中断影响
 	                      TMOD^6 C/T=0     计数器1工作在定时模式
 						  TMOD^5 SM1=0    
 						  TMOD^4 SM0=0     计数器1工作在工作方式2

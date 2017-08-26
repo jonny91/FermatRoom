@@ -1,4 +1,4 @@
-C51 COMPILER V9.54   MAIN                                                                  06/21/2017 22:25:05 PAGE 1   
+C51 COMPILER V9.54   MAIN                                                                  08/26/2017 18:37:17 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
@@ -14,340 +14,379 @@ line level    source
    4          #include "uart.h"
    5          #include "mp3.h"
    6          
-   7          //第一个房间过来的信号 开始计时
-   8          sbit FROM_ROOM1 = P0^0;
-   9          sbit LIGHT_1 = P0^1;
-  10          sbit LIGHT_2 = P0^2;
-  11          sbit LIGHT_3 = P0^3;
-  12          sbit LIGHT_4 = P0^4;
-  13          sbit ABC_SWITCH = P0^5; //ABC机关的开关
-  14          sbit LIGHT_INPUT_1 = P1^1;
-  15          sbit LIGHT_INPUT_2 = P1^2;
-  16          sbit LIGHT_INPUT_3 = P1^3;
-  17          sbit LIGHT_INPUT_4 = P1^4;
-  18          
-  19          sbit HUO_1 = P0^6;
-  20          sbit HUO_2 = P0^7;
-  21          sbit HUO_3 = P1^5;
-  22          sbit HUO_4 = P1^6;
-  23          sbit HUO_5 = P1^7;
-  24          sbit HUO_6 = P2^0;
-  25          sbit HUO_7 = P2^1;
-  26          sbit HUO_8 = P2^2;
-  27          sbit HUO_9 = P2^3;
-  28          
-  29          sbit GAME_B_BTN1 = P2^4;
-  30          sbit GAME_B_BTN2 = P2^5;
-  31          sbit GAME_B_LOCK = P2^6;//B机关成功 电磁锁的门
-  32          
-  33          sbit GAME_C_1 = P3^4; //C机关指定摆放
-  34          sbit GAME_C_2 = P3^5;
-  35          
-  36          sbit ROOM_3_DOOR = P3^6;//房间3的门
-  37          
+   7          typedef unsigned char BYTE;
+   8          typedef unsigned int WORD;
+   9          #define FOSC 11059200L
+  10          #define MODE1T                      //Timer clock mode, comment this line is 12T mode, uncomment is 1T mod
+             -e
+  11          
+  12          #ifdef MODE1T
+  13          #define T1MS (65536-FOSC/1000)      //1ms timer calculation method in 1T mode
+  14          #else
+              #define T1MS (65536-FOSC/12/1000)   //1ms timer calculation method in 12T mode
+              #endif
+  17          
+  18          //口令输入
+  19          sbit FROM_ROOM1 = P0^0;
+  20          sbit ROOM_2 = P2^7;
+  21          
+  22          sbit LIGHT_1 = P0^1;
+  23          sbit LIGHT_2 = P0^2;
+  24          sbit LIGHT_3 = P0^3;
+  25          sbit LIGHT_4 = P0^4;
+  26          sbit ABC_SWITCH = P0^5; //ABC机关的开关
+  27          sbit LIGHT_INPUT_1 = P1^1;
+  28          sbit LIGHT_INPUT_2 = P1^2;
+  29          sbit LIGHT_INPUT_3 = P1^3;
+  30          sbit LIGHT_INPUT_4 = P1^4;
+  31          
+  32          int isIntroduceLight = 0;//是不是介绍过了激光
+  33          
+  34          sbit INPUT_A = P3^7;
+  35          sbit GAME_A_LOCK = P3^2;
+  36          
+  37          sbit TO_BOARD_2 = P0^6;
   38          
-  39          int i = 0;
-  40          int five_minute_light_step = 0;
-  41          int myAnswer[10] = {0,0,0,0,0,0,0,0,0,0};
-  42          int answerLength = 10;
-  43          
-  44          void start();
-  45          void timer0();
-  46          void fiveMinutes();
-  47          void gameA();
-  48          void gameB();
-  49          void gameC();
-  50          
-  51          void init()
-  52          {
-  53   1        FROM_ROOM1 = 0;
-  54   1        LIGHT_1 = 1;
-C51 COMPILER V9.54   MAIN                                                                  06/21/2017 22:25:05 PAGE 2   
+  39          sbit GAME_B_BTN1 = P2^4;
+  40          sbit GAME_B_BTN2 = P2^5;
+  41          sbit GAME_B_LOCK = P2^6;//B机关成功 电磁锁的门
+  42          
+  43          sbit GAME_C_1 = P3^4; //C机关指定摆放
+  44          sbit GAME_C_2 = P3^5;
+  45          
+  46          sbit ROOM_3_DOOR = P3^6;//房间3的门
+  47          
+  48          
+  49          int i = 0;
+  50          int five_minute_light_step = 0;
+  51          
+  52          void start();
+  53          void timer0();
+C51 COMPILER V9.54   MAIN                                                                  08/26/2017 18:37:17 PAGE 2   
 
-  55   1        LIGHT_2 = 1;
-  56   1        LIGHT_3 = 1;
-  57   1        LIGHT_4 = 1;
-  58   1        LIGHT_INPUT_1 = 0;
-  59   1        LIGHT_INPUT_2 = 0;
-  60   1        LIGHT_INPUT_3 = 0;
-  61   1        LIGHT_INPUT_4 = 0;
-  62   1        ABC_SWITCH = 0;
+  54          void fiveMinutes();
+  55          void gameA();
+  56          void gameB();
+  57          void gameC();
+  58          
+  59          void init()
+  60          {
+  61   1        FROM_ROOM1 = 0;
+  62   1        ROOM_2 = 1;
   63   1        
-  64   1        HUO_1 = 0;
-  65   1        HUO_2 = 0;
-  66   1        HUO_3 = 0;
-  67   1        HUO_4 = 0;
-  68   1        HUO_5 = 0;
-  69   1        HUO_6 = 0;
-  70   1        HUO_7 = 0;
-  71   1        HUO_8 = 0;
-  72   1        HUO_9 = 0;
-  73   1        GAME_B_BTN1 = 0;
-  74   1        GAME_B_BTN2 = 0;
-  75   1        GAME_B_LOCK = 0;
+  64   1        LIGHT_1 = 1;
+  65   1        LIGHT_2 = 1;
+  66   1        LIGHT_3 = 1;
+  67   1        LIGHT_4 = 1;
+  68   1        LIGHT_INPUT_1 = 1;
+  69   1        LIGHT_INPUT_2 = 1;
+  70   1        LIGHT_INPUT_3 = 1;
+  71   1        LIGHT_INPUT_4 = 1;
+  72   1        ABC_SWITCH = 1;
+  73   1        
+  74   1        INPUT_A = 0;
+  75   1        GAME_A_LOCK = 1;
   76   1        
-  77   1        GAME_C_1 = 0;
-  78   1        GAME_C_2 = 0;
-  79   1        
-  80   1        ROOM_3_DOOR = 0;
-  81   1      }
-  82          void main()
-  83          {
-  84   1        init();
-  85   1        uart_init();
-  86   1        mp3_init();
-  87   1        timer0();
-  88   1        //定时器暂停
-  89   1        ET0 = 0;
-  90   1      
-  91   1        delay_ms(100);  
-  92   1        
-  93   1        while(1)
-  94   1        {
-  95   2          switch(step)
-  96   2          {
-  97   3            case 0:
-  98   3              start();
-  99   3              break;
- 100   3            case 1:
- 101   3              fiveMinutes();
- 102   3              break;
- 103   3            case 2:
- 104   3              break;
- 105   3          }
- 106   2        }
- 107   1      }
- 108          
- 109          void start()
- 110          {
- 111   1        if(FROM_ROOM1 == 1)
- 112   1        {
- 113   2          delay_ms(2000);
- 114   2          setStep(1);
- 115   2        }
- 116   1      }
-C51 COMPILER V9.54   MAIN                                                                  06/21/2017 22:25:05 PAGE 3   
+  77   1        GAME_B_BTN1 = 0;
+  78   1        GAME_B_BTN2 = 0;
+  79   1        GAME_B_LOCK = 1;
+  80   1        
+  81   1        GAME_C_1 = 0;
+  82   1        GAME_C_2 = 0;
+  83   1        
+  84   1        ROOM_3_DOOR = 1;
+  85   1      }
+  86          void main()
+  87          {
+  88   1        init();
+  89   1        uart_init();
+  90   1        mp3_init();
+  91   1        timer0();
+  92   1        //定时器暂停
+  93   1        ET0 = 0;
+  94   1      
+  95   1        delay_ms(100);  
+  96   1        
+  97   1        while(1)
+  98   1        {
+  99   2          switch(step)
+ 100   2          {
+ 101   3            case 0:
+ 102   3              start();
+ 103   3              break;
+ 104   3            case 1:
+ 105   3              fiveMinutes();
+ 106   3              break;
+ 107   3            case 2:
+ 108   3              break;
+ 109   3          }
+ 110   2        }
+ 111   1      }
+ 112          
+ 113          void start()
+ 114          {
+ 115   1        if(FROM_ROOM1 == 1) //口令正确 打开门
+C51 COMPILER V9.54   MAIN                                                                  08/26/2017 18:37:17 PAGE 3   
 
- 117          
- 118          void checkLightStep()
- 119          {
- 120   1        if(five_minute_light_step == 1)
- 121   1        {
- 122   2          LIGHT_1 = 1;
- 123   2          LIGHT_2 = 0;
- 124   2          LIGHT_3 = 0;
- 125   2          LIGHT_4 = 0;
- 126   2        }
- 127   1        else if(five_minute_light_step == 2)
- 128   1        {
- 129   2          LIGHT_1 = 1;
- 130   2          LIGHT_2 = 1;
- 131   2          LIGHT_3 = 0;
- 132   2          LIGHT_4 = 0;
- 133   2        }
- 134   1        else if(five_minute_light_step == 3)
- 135   1        {
- 136   2          LIGHT_1 = 1;
- 137   2          LIGHT_2 = 1;
- 138   2          LIGHT_3 = 1;
- 139   2          LIGHT_4 = 0;
- 140   2        }
- 141   1        else if(five_minute_light_step == 4)
- 142   1        {
- 143   2          LIGHT_1 = 1;
- 144   2          LIGHT_2 = 1;
- 145   2          LIGHT_3 = 1;
- 146   2          LIGHT_4 = 1;
- 147   2        }
- 148   1      }
- 149          
- 150          //检查有没有碰到激光
- 151          void checkTouchLight()
- 152          {
- 153   1        if(five_minute_light_step == 1)
+ 116   1        {
+ 117   2          delay_ms(2000);
+ 118   2          ROOM_2 = 0;
+ 119   2          play_mp3(0,MUSIC_301);
+ 120   2          setStep(1);
+ 121   2        }
+ 122   1      }
+ 123          
+ 124          void checkLightStep()
+ 125          {
+ 126   1        if(five_minute_light_step == 1)
+ 127   1        {
+ 128   2          LIGHT_1 = 1;
+ 129   2          LIGHT_2 = 0;
+ 130   2          LIGHT_3 = 0;
+ 131   2          LIGHT_4 = 0;
+ 132   2          
+ 133   2          if(isIntroduceLight == 0)
+ 134   2          {
+ 135   3            play_mp3(0,MUSIC_303); // 第一次触发介绍激光
+ 136   3            isIntroduceLight = 1;
+ 137   3          }
+ 138   2        }
+ 139   1        else if(five_minute_light_step == 2)
+ 140   1        {
+ 141   2          LIGHT_1 = 1;
+ 142   2          LIGHT_2 = 1;
+ 143   2          LIGHT_3 = 0;
+ 144   2          LIGHT_4 = 0;
+ 145   2        }
+ 146   1        else if(five_minute_light_step == 3)
+ 147   1        {
+ 148   2          LIGHT_1 = 1;
+ 149   2          LIGHT_2 = 1;
+ 150   2          LIGHT_3 = 1;
+ 151   2          LIGHT_4 = 0;
+ 152   2        }
+ 153   1        else if(five_minute_light_step == 4)
  154   1        {
- 155   2          if(LIGHT_INPUT_1 == 0)//被挡住了
- 156   2          {
- 157   3            ABC_SWITCH = 0;
- 158   3          }
- 159   2          else
- 160   2          {
- 161   3            ABC_SWITCH = 1;
- 162   3          }
- 163   2        }
- 164   1        else if(five_minute_light_step == 2)
- 165   1        {
- 166   2          if((LIGHT_INPUT_1 == 0) || (LIGHT_INPUT_2 == 0))//被挡住了
- 167   2          {
- 168   3            ABC_SWITCH = 0;
- 169   3          }
- 170   2          else
- 171   2          {
- 172   3            ABC_SWITCH = 1;
- 173   3          }
- 174   2        }
- 175   1        else if(five_minute_light_step == 3)
- 176   1        {
- 177   2          if((LIGHT_INPUT_1 == 0) || (LIGHT_INPUT_2 == 0) || (LIGHT_INPUT_3 == 0))//被挡住了
- 178   2          {
-C51 COMPILER V9.54   MAIN                                                                  06/21/2017 22:25:05 PAGE 4   
+ 155   2          LIGHT_1 = 1;
+ 156   2          LIGHT_2 = 1;
+ 157   2          LIGHT_3 = 1;
+ 158   2          LIGHT_4 = 1;
+ 159   2        }
+ 160   1      }
+ 161          
+ 162          //检查有没有碰到激光
+ 163          void checkTouchLight()
+ 164          {
+ 165   1        if(five_minute_light_step == 1)
+ 166   1        {
+ 167   2          if(LIGHT_INPUT_1 == 0)//被挡住了
+ 168   2          {
+ 169   3            ABC_SWITCH = 0;
+ 170   3          }
+ 171   2          else
+ 172   2          {
+ 173   3            ABC_SWITCH = 1;
+ 174   3          }
+ 175   2        }
+ 176   1        else if(five_minute_light_step == 2)
+ 177   1        {
+C51 COMPILER V9.54   MAIN                                                                  08/26/2017 18:37:17 PAGE 4   
 
- 179   3            ABC_SWITCH = 0;
- 180   3          }
- 181   2          else
- 182   2          {
- 183   3            ABC_SWITCH = 1;
- 184   3          }
- 185   2        }
- 186   1        else if(five_minute_light_step == 4)
- 187   1        {
- 188   2          if((LIGHT_INPUT_1 == 0) || (LIGHT_INPUT_2 == 0) || (LIGHT_INPUT_3 == 0) || (LIGHT_INPUT_4 == 0))//被挡住
+ 178   2          if((LIGHT_INPUT_1 == 0) || (LIGHT_INPUT_2 == 0))//被挡住了
+ 179   2          {
+ 180   3            ABC_SWITCH = 0;
+ 181   3          }
+ 182   2          else
+ 183   2          {
+ 184   3            ABC_SWITCH = 1;
+ 185   3          }
+ 186   2        }
+ 187   1        else if(five_minute_light_step == 3)
+ 188   1        {
+ 189   2          if((LIGHT_INPUT_1 == 0) || (LIGHT_INPUT_2 == 0) || (LIGHT_INPUT_3 == 0))//被挡住了
+ 190   2          {
+ 191   3            ABC_SWITCH = 0;
+ 192   3          }
+ 193   2          else
+ 194   2          {
+ 195   3            ABC_SWITCH = 1;
+ 196   3          }
+ 197   2        }
+ 198   1        else if(five_minute_light_step == 4)
+ 199   1        {
+ 200   2          if((LIGHT_INPUT_1 == 0) || (LIGHT_INPUT_2 == 0) || (LIGHT_INPUT_3 == 0) || (LIGHT_INPUT_4 == 0))//被挡住
              -了
- 189   2          {
- 190   3            ABC_SWITCH = 0;
- 191   3          }
- 192   2          else
- 193   2          {
- 194   3            ABC_SWITCH = 1;
- 195   3          }
- 196   2        }
- 197   1      }
- 198          
- 199          int gameStep = 1;
- 200          void fiveMinutes()
- 201          {
- 202   1        ET0 = 1;
- 203   1        while(1)
- 204   1        {
- 205   2          checkTouchLight();
- 206   2          if(gameStep == 1)
- 207   2          {
- 208   3            gameA();
- 209   3          }
- 210   2          else if(gameStep == 2)
- 211   2          {
- 212   3            gameB();
- 213   3          }
- 214   2          else if(gameStep == 3)
- 215   2          {
- 216   3            gameC();
- 217   3          }
- 218   2        }
- 219   1      }
- 220          
- 221          void gameA()
- 222          {
- 223   1        
- 224   1      }
- 225          
- 226          
- 227          void gameB()
- 228          {
- 229   1        int btn = 0;
- 230   1        if(GAME_B_BTN1 == 0)
- 231   1        {
- 232   2          delay_ms(20);
- 233   2          if(GAME_B_BTN1 == 1)
- 234   2          {
- 235   3            btn = 1;
- 236   3          }
- 237   2        }
- 238   1        
- 239   1        if(GAME_B_BTN1 == 0)
-C51 COMPILER V9.54   MAIN                                                                  06/21/2017 22:25:05 PAGE 5   
+ 201   2          {
+ 202   3            ABC_SWITCH = 0;
+ 203   3          }
+ 204   2          else
+ 205   2          {
+ 206   3            ABC_SWITCH = 1;
+ 207   3          }
+ 208   2        }
+ 209   1      }
+ 210          
+ 211          int gameStep = 1;
+ 212          void fiveMinutes()
+ 213          {
+ 214   1        ET0 = 1;
+ 215   1        while(1)
+ 216   1        {
+ 217   2          checkTouchLight();
+ 218   2          if(gameStep == 1)
+ 219   2          {
+ 220   3            gameA();
+ 221   3          }
+ 222   2          else if(gameStep == 2)
+ 223   2          {
+ 224   3            gameB();
+ 225   3          }
+ 226   2          else if(gameStep == 3)
+ 227   2          {
+ 228   3            gameC();
+ 229   3          }
+ 230   2        }
+ 231   1      }
+ 232          
+ 233          void gameA()
+ 234          {
+ 235   1        if(INPUT_A == 1)
+ 236   1        {
+ 237   2          delay_ms(50);
+ 238   2          if(INPUT_A == 1)
+C51 COMPILER V9.54   MAIN                                                                  08/26/2017 18:37:17 PAGE 5   
 
- 240   1        {
- 241   2          delay_ms(20);
- 242   2          if(GAME_B_BTN1 == 1)
- 243   2          {
- 244   3            btn = 2;
- 245   3          }
- 246   2        }
- 247   1        
- 248   1        if(btn != 0)
- 249   1        {
- 250   2          int answerIndex = 0;
- 251   2          for(answerIndex = 0 ; answerIndex < answerLength-1 ; answerIndex++ )
- 252   2          {
- 253   3            myAnswer[answerIndex] = myAnswer[answerIndex+1];
- 254   3          }
- 255   2          myAnswer[answerLength - 1] = btn;
- 256   2          
- 257   2          for(answerIndex == 0 ; answerIndex<answerLength ; answerIndex++)
- 258   2          {
- 259   3            if(CORRECT[answerIndex] == myAnswer[answerIndex])
- 260   3            {
- 261   4              if(answerIndex == answerLength - 1)
- 262   4              {
- 263   5                i = TICKER; //计时器归0
- 264   5                GAME_B_LOCK = 1;//电磁锁断电
- 265   5                gameStep = 3;
- 266   5                return;
- 267   5              }
- 268   4              else
- 269   4              {
- 270   5                return;
- 271   5              }
- 272   4            }
- 273   3          }
- 274   2        }
- 275   1      }
- 276          
- 277          void gameC()
- 278          {
- 279   1        if((GAME_C_1 == 1)&&(GAME_C_2 == 1))
- 280   1        {
- 281   2          i = TICKER; //计时器归0
- 282   2          ET0 = 0;//计时器停止
- 283   2          gameStep = 4;
- 284   2          setStep(2);
- 285   2          LIGHT_1 = 1;
- 286   2          LIGHT_2 = 1;
- 287   2          LIGHT_3 = 1;
- 288   2          LIGHT_4 = 1;
- 289   2          ROOM_3_DOOR = 1;
- 290   2        }
- 291   1      }
- 292          
- 293          void Timer_Routine(void) interrupt 1
- 294          {
- 295   1        TL0 = 0x00;
- 296   1        TH0 = 0x4C;
- 297   1      
- 298   1          i--;
- 299   1      
- 300   1          if(i == 0)
- 301   1        {
-C51 COMPILER V9.54   MAIN                                                                  06/21/2017 22:25:05 PAGE 6   
+ 239   2          {
+ 240   3            play_mp3(0,MUSIC_302);
+ 241   3            i = TICKER; //计时器归0
+ 242   3            GAME_A_LOCK = 0;//打开电磁锁
+ 243   3            gameStep = 2;
+ 244   3          }
+ 245   2        }
+ 246   1      }
+ 247          
+ 248          int isGameBButton1Pressed = 0;
+ 249          int isGameBButton2Pressed = 0;
+ 250          int gameBMyAnswer[4] = {0,0,0,0};
+ 251          void gameB()
+ 252          {
+ 253   1        int btn = 0;
+ 254   1          
+ 255   1        if((isGameBButton1Pressed == 0)&&(GAME_B_BTN1 == 1))
+ 256   1        {
+ 257   2          isGameBButton1Pressed = 1;
+ 258   2        }
+ 259   1        
+ 260   1        if((isGameBButton2Pressed == 0)&&(GAME_B_BTN2 == 1))
+ 261   1        {
+ 262   2          isGameBButton2Pressed = 1;
+ 263   2        }
+ 264   1        
+ 265   1        if((isGameBButton1Pressed == 1)&&(isGameBButton2Pressed == 1))//同时按下
+ 266   1        {
+ 267   2          while((isGameBButton1Pressed == 1)&&(isGameBButton2Pressed == 1)){}; //直到松开
+ 268   2          isGameBButton1Pressed = 0;
+ 269   2          isGameBButton2Pressed = 0;
+ 270   2          
+ 271   2          btn = 3;
+ 272   2        }
+ 273   1        
+ 274   1        if((isGameBButton1Pressed == 1)&&(isGameBButton2Pressed == 0))
+ 275   1        {
+ 276   2          while((isGameBButton1Pressed == 1)&&(isGameBButton2Pressed == 0));
+ 277   2          isGameBButton1Pressed = 0;
+ 278   2          isGameBButton2Pressed = 0;
+ 279   2          btn = 1;
+ 280   2        }
+ 281   1        
+ 282   1        if((isGameBButton1Pressed == 0)&&(isGameBButton2Pressed == 1))
+ 283   1        {
+ 284   2          while((isGameBButton1Pressed == 0)&&(isGameBButton2Pressed == 1));
+ 285   2          isGameBButton1Pressed = 0;
+ 286   2          isGameBButton2Pressed = 0;
+ 287   2          btn = 2;
+ 288   2        }
+ 289   1      
+ 290   1        if(btn != 0)
+ 291   1        {
+ 292   2          gameBMyAnswer[0] = gameBMyAnswer[1];
+ 293   2          gameBMyAnswer[1] = gameBMyAnswer[2];
+ 294   2          gameBMyAnswer[2] = gameBMyAnswer[3];
+ 295   2          gameBMyAnswer[3] = btn;
+ 296   2      
+ 297   2          if((gameBMyAnswer[0] == gameBAnswer[0])&&
+ 298   2          (gameBMyAnswer[1] == gameBAnswer[1])&&
+ 299   2          (gameBMyAnswer[2] == gameBAnswer[2])&&
+ 300   2          (gameBMyAnswer[3] == gameBAnswer[3]))//正确
+C51 COMPILER V9.54   MAIN                                                                  08/26/2017 18:37:17 PAGE 6   
 
- 302   2          i = TICKER;   
- 303   2          //5分钟到了
- 304   2          five_minute_light_step++;
- 305   2          checkLightStep();
- 306   2          }        
- 307   1      }
- 308          
+ 301   2          {
+ 302   3            play_mp3(0,MUSIC_304);
+ 303   3            i = TICKER; //计时器归0
+ 304   3            GAME_B_LOCK = 0;//电磁锁断电
+ 305   3            gameStep = 3;
+ 306   3          }
+ 307   2        }
+ 308   1      }
  309          
- 310          void timer0()
+ 310          void gameC()
  311          {
- 312   1          i = TICKER; 
- 313   1      
- 314   1          TMOD = 0x01;
- 315   1          TL0 = 0x00; 
- 316   1          TH0 = 0x4C;
- 317   1          ET0 = 1;
- 318   1          EA  = 1;
- 319   1          TR0 = 1;
- 320   1      
- 321   1      }
+ 312   1        if((GAME_C_1 == 1)&&(GAME_C_2 == 1))
+ 313   1        {
+ 314   2          play_mp3(0,MUSIC_305);
+ 315   2          i = TICKER; //计时器归0
+ 316   2          ET0 = 0;//计时器停止
+ 317   2          gameStep = 4;
+ 318   2          setStep(2);
+ 319   2          LIGHT_1 = 1;
+ 320   2          LIGHT_2 = 1;
+ 321   2          LIGHT_3 = 1;
+ 322   2          LIGHT_4 = 1;
+ 323   2          ROOM_3_DOOR = 0;
+ 324   2        }
+ 325   1      }
+ 326          
+ 327          void Timer_Routine(void) interrupt 1
+ 328          {
+ 329   1        TL0 = T1MS;                     //reload timer0 low byte
+ 330   1          TH0 = T1MS >> 8;                //reload timer0 high byte
+ 331   1      
+ 332   1          i--;
+ 333   1      
+ 334   1          if(i == 0)
+ 335   1        {
+ 336   2          i = TICKER;   
+ 337   2          //5分钟到了
+ 338   2          five_minute_light_step++;
+ 339   2          checkLightStep();
+ 340   2          }        
+ 341   1      }
+ 342          
+ 343          
+ 344          void timer0()
+ 345          {
+ 346   1          i = TICKER; 
+ 347   1        
+ 348   1      #ifdef MODE1T
+ 349   1          AUXR = 0x80;                    //timer0 work in 1T mode
+ 350   1      #endif
+ 351   1          TMOD |= 0x01;                    //set timer0 as mode1 (16-bit)
+ 352   1          TL0 = T1MS;                     //initial timer0 low byte
+ 353   1          TH0 = T1MS >> 8;                //initial timer0 high byte
+ 354   1          TR0 = 1;                        //timer0 start running
+ 355   1          ET0 = 1;                        //enable timer0 interrupt
+ 356   1          EA = 1;                         //open global interrupt switch
+ 357   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1043    ----
-   CONSTANT SIZE    =     22    ----
+   CODE SIZE        =   1213    ----
+   CONSTANT SIZE    =     40    ----
+C51 COMPILER V9.54   MAIN                                                                  08/26/2017 18:37:17 PAGE 7   
+
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =     31       2
+   DATA SIZE        =     23       4
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
