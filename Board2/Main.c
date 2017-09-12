@@ -30,35 +30,42 @@ void init()
 	OUTPUT_DOOR = 1;
 }
 
+//只播放一次
+int isA = 0;
+int isB = 0;
+int isC = 0;
 void CheckInput()
 {
-	if(INPUT_A == 0)
+	if((INPUT_A == 1)&&(isA == 0))
 	{
 		delay_ms(50);
 		if(INPUT_A == 1)
 		{
+			isA = 1;
 			//播放语音
 			play_mp3(0,0x01);
 			delay_ms(10000);
 		}
 	}
 		
-	if(INPUT_B == 0)
+	if((INPUT_B == 1))&&(isB == 0))
 	{
 		delay_ms(50);
 		if(INPUT_B == 1)
 		{
+			isB = 1;
 			//播放语音
 			play_mp3(0,0x02);
 			delay_ms(10000);
 		}
 	}
 		
-	if(INPUT_C == 0)
+	if((INPUT_C == 1))&&(isC == 0))
 	{
 		delay_ms(50);
 		if(INPUT_C == 1)
 		{
+			isC = 1;
 			//播放语音
 			play_mp3(0,0x03);
 			delay_ms(10000);
