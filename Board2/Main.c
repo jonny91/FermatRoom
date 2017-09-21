@@ -8,9 +8,7 @@ sbit INPUT_A = P0^0;
 sbit INPUT_B = P0^1;
 sbit INPUT_C = P0^2;
 
-sbit LIGHT_A = P1^0;
-sbit LIGHT_B = P1^1;
-sbit LIGHT_C = P1^2;
+sbit LIGHT = P1^0;
 
 sbit OUTPUT_DOOR = P0^3;
 
@@ -23,9 +21,7 @@ void init()
 	INPUT_B = 0;
 	INPUT_C = 0;
 	
-	LIGHT_A = 1;
-	LIGHT_B = 1;
-	LIGHT_C = 1;
+	LIGHT = 1;
 	
 	OUTPUT_DOOR = 1;
 }
@@ -42,7 +38,6 @@ void CheckInput()
 		if(INPUT_A == 1)
 		{
 			isA = 1;
-			LIGHT_A = 0;
 			//播放语音
 			play_mp3(0,0x01);
 			delay_ms(10000);
@@ -55,7 +50,6 @@ void CheckInput()
 		if(INPUT_B == 1)
 		{
 			isB = 1;
-			LIGHT_B = 0;
 			//播放语音
 			play_mp3(0,0x02);
 			delay_ms(10000);
@@ -68,7 +62,6 @@ void CheckInput()
 		if(INPUT_C == 1)
 		{
 			isC = 1;
-			LIGHT_C = 0;
 			//播放语音
 			play_mp3(0,0x03);
 			delay_ms(10000);
@@ -77,6 +70,7 @@ void CheckInput()
 		
 	if((INPUT_A == 1)&&(INPUT_B == 1)&&(INPUT_C == 1))
 	{		
+		LIGHT = 0;
 		setStep(2);
 	}
 }
