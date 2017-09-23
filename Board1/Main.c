@@ -197,7 +197,7 @@ void checkTouchLight()
 	}
 	else if(five_minute_light_step == 4)
 	{
-		if((LIGHT_INPUT_1 == 1) && (LIGHT_INPUT_2 == 1)&&(LIGHT_INPUT_3 == 1)&&((LIGHT_INPUT_4 == 1))
+		if((LIGHT_INPUT_1 == 1) && (LIGHT_INPUT_2 == 1)&&(LIGHT_INPUT_3 == 1)&&(LIGHT_INPUT_4 == 1))
 		{
 			ABC_SWITCH = 1;
 		}
@@ -245,64 +245,52 @@ void gameA()
 	}
 }
 
-int isGameBButton1Pressed = 0;
-int isGameBButton2Pressed = 0;
 int gameBMyAnswer[4] = {0,0,0,0};
+int isAllGameButtonUp = 0; //有按键按下
 void gameB()
 {
 	int btn = 0;
 		
-	if((isGameBButton1Pressed == 0)&&(GAME_B_BTN1 == 1))
+	if(isAllGameButtonUp == 0)
 	{
-		isGameBButton1Pressed = 1;
-	}
-	
-	if((isGameBButton2Pressed == 0)&&(GAME_B_BTN2 == 1))
-	{
-		isGameBButton2Pressed = 1;
-	}
-	
-	if((isGameBButton1Pressed == 1)&&(isGameBButton2Pressed == 1))//同时按下
-	{
-		while((isGameBButton1Pressed == 1)&&(isGameBButton2Pressed == 1)){}; //直到松开
-		isGameBButton1Pressed = 0;
-		isGameBButton2Pressed = 0;
-		
-		btn = 3;
-	}
-	
-	if((isGameBButton1Pressed == 1)&&(isGameBButton2Pressed == 0))
-	{
-		while((isGameBButton1Pressed == 1)&&(isGameBButton2Pressed == 0));
-		isGameBButton1Pressed = 0;
-		isGameBButton2Pressed = 0;
-		btn = 1;
-	}
-	
-	if((isGameBButton1Pressed == 0)&&(isGameBButton2Pressed == 1))
-	{
-		while((isGameBButton1Pressed == 0)&&(isGameBButton2Pressed == 1));
-		isGameBButton1Pressed = 0;
-		isGameBButton2Pressed = 0;
-		btn = 2;
-	}
-
-	if(btn != 0)
-	{
-		gameBMyAnswer[0] = gameBMyAnswer[1];
-		gameBMyAnswer[1] = gameBMyAnswer[2];
-		gameBMyAnswer[2] = gameBMyAnswer[3];
-		gameBMyAnswer[3] = btn;
-
-		if((gameBMyAnswer[0] == gameBAnswer[0])&&
-		(gameBMyAnswer[1] == gameBAnswer[1])&&
-		(gameBMyAnswer[2] == gameBAnswer[2])&&
-		(gameBMyAnswer[3] == gameBAnswer[3]))//正确
+		if((GAME_B_BTN1 == 1)&&(GAME_B_BTN2 == 1)) // 4 7一起按下
 		{
-			play_mp3(0,MUSIC_304);
-			i = TICKER;	//计时器归0
-			GAME_B_LOCK = 0;//电磁锁断电
-			gameStep = 3;
+			btn = 3;
+			isAllGameButtonUp = 1;
+		}
+		else if(GAME_B_BTN1 == 1)
+		{
+			btn = 1;
+			isAllGameButtonUp = 1;
+		}
+		else if(GAME_B_BTN2 == 1)
+		{
+			btn = 2;
+			isAllGameButtonUp = 1;
+		}
+		
+		if((GAME_B_BTN1 == 0) && (GAME_B_BTN2 == 0)) //两个按钮都抬起来了
+		{
+			isAllGameButtonUp = 0;
+			
+			if(btn != 0)
+			{
+				gameBMyAnswer[0] = gameBMyAnswer[1];
+				gameBMyAnswer[1] = gameBMyAnswer[2];
+				gameBMyAnswer[2] = gameBMyAnswer[3];
+				gameBMyAnswer[3] = btn;
+
+				if((gameBMyAnswer[0] == gameBAnswer[0])&&
+				(gameBMyAnswer[1] == gameBAnswer[1])&&
+				(gameBMyAnswer[2] == gameBAnswer[2])&&
+				(gameBMyAnswer[3] == gameBAnswer[3]))//正确
+				{
+					play_mp3(0,MUSIC_304);
+					i = TICKER;	//计时器归0
+					GAME_B_LOCK = 0;//电磁锁断电
+					gameStep = 3;
+				}
+			}
 		}
 	}
 }
