@@ -175,35 +175,35 @@ void checkTouchLight()
 	}
 	else if(five_minute_light_step == 2)
 	{
-		if((LIGHT_INPUT_1 == 0) || (LIGHT_INPUT_2 == 0))//被挡住了
-		{
-			ABC_SWITCH = 0;
-		}
-		else
+		if((LIGHT_INPUT_1 == 1) && (LIGHT_INPUT_2 == 1))
 		{
 			ABC_SWITCH = 1;
+		}
+		else//被挡住了
+		{
+			ABC_SWITCH = 0;
 		}
 	}
 	else if(five_minute_light_step == 3)
-	{
-		if((LIGHT_INPUT_1 == 0) || (LIGHT_INPUT_2 == 0) || (LIGHT_INPUT_3 == 0))//被挡住了
-		{
-			ABC_SWITCH = 0;
-		}
-		else
+	{	
+		if((LIGHT_INPUT_1 == 1) && (LIGHT_INPUT_2 == 1)&&(LIGHT_INPUT_3 == 1))
 		{
 			ABC_SWITCH = 1;
+		}
+		else//被挡住了
+		{
+			ABC_SWITCH = 0;
 		}
 	}
 	else if(five_minute_light_step == 4)
 	{
-		if((LIGHT_INPUT_1 == 0) || (LIGHT_INPUT_2 == 0) || (LIGHT_INPUT_3 == 0) || (LIGHT_INPUT_4 == 0))//被挡住了
-		{
-			ABC_SWITCH = 0;
-		}
-		else
+		if((LIGHT_INPUT_1 == 1) && (LIGHT_INPUT_2 == 1)&&(LIGHT_INPUT_3 == 1)&&((LIGHT_INPUT_4 == 1))
 		{
 			ABC_SWITCH = 1;
+		}
+		else//被挡住了
+		{
+			ABC_SWITCH = 0;
 		}
 	}
 }
