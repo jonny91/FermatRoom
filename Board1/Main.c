@@ -125,10 +125,10 @@ void checkLightStep()
 {
 	if(five_minute_light_step == 1)
 	{
-		LIGHT_1 = 1;
-		LIGHT_2 = 0;
-		LIGHT_3 = 0;
-		LIGHT_4 = 0;
+		LIGHT_1 = 0;
+		LIGHT_2 = 1;
+		LIGHT_3 = 1;
+		LIGHT_4 = 1;
 		
 		if(isIntroduceLight == 0)
 		{
@@ -138,24 +138,24 @@ void checkLightStep()
 	}
 	else if(five_minute_light_step == 2)
 	{
-		LIGHT_1 = 1;
-		LIGHT_2 = 1;
-		LIGHT_3 = 0;
-		LIGHT_4 = 0;
+		LIGHT_1 = 0;
+		LIGHT_2 = 0;
+		LIGHT_3 = 1;
+		LIGHT_4 = 1;
 	}
 	else if(five_minute_light_step == 3)
 	{
-		LIGHT_1 = 1;
-		LIGHT_2 = 1;
-		LIGHT_3 = 1;
-		LIGHT_4 = 0;
+		LIGHT_1 = 0;
+		LIGHT_2 = 0;
+		LIGHT_3 = 0;
+		LIGHT_4 = 1;
 	}
 	else if(five_minute_light_step == 4)
 	{
-		LIGHT_1 = 1;
-		LIGHT_2 = 1;
-		LIGHT_3 = 1;
-		LIGHT_4 = 1;
+		LIGHT_1 = 0;
+		LIGHT_2 = 0;
+		LIGHT_3 = 0;
+		LIGHT_4 = 0;
 	}
 }
 
