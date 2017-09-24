@@ -46,7 +46,7 @@ sbit GAME_C_2 = P3^5;
 sbit ROOM_3_DOOR = P3^6;//房间3的门
 
 
-int i = 0;
+int i = TICKER;
 int five_minute_light_step = 0;
 
 void start();
