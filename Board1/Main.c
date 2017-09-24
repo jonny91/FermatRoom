@@ -15,7 +15,7 @@ typedef unsigned int WORD;
 #define T1MS (65536-FOSC/12/1000)   //1ms timer calculation method in 12T mode
 #endif
 
-//口令输入
+//门禁输入
 sbit FROM_ROOM1 = P0^0;
 sbit ROOM_2 = P2^7;
 
@@ -46,7 +46,7 @@ sbit GAME_C_2 = P3^5;
 sbit ROOM_3_DOOR = P3^6;//房间3的门
 
 
-int i = TICKER;
+int i;
 int five_minute_light_step = 0;
 
 void start();
@@ -58,6 +58,7 @@ void gameC();
 
 void init()
 {
+	i = TICKER;
 	FROM_ROOM1 = 0;
 	ROOM_2 = 1;
 	
@@ -245,51 +246,78 @@ void gameA()
 	}
 }
 
-int gameBMyAnswer[4] = {0,0,0,0};
-int isAllGameButtonUp = 0; //有按键按下
+int isGameBStart = 0;
+int gameBStep = 0;
+int myGameBAnswer[3] = {0,0,0};
 void gameB()
 {
-	int btn = 0;
-		
-	if(isAllGameButtonUp == 0)
+	if(isGameBStart == 0) //还没有开始 47一起按下触发
 	{
 		if((GAME_B_BTN1 == 1)&&(GAME_B_BTN2 == 1)) // 4 7一起按下
 		{
-			btn = 3;
-			isAllGameButtonUp = 1;
+			isGameBStart = 1;//开始
 		}
-		else if(GAME_B_BTN1 == 1)
+	}
+	else
+	{
+		if(gameBStep == 0)
 		{
-			btn = 1;
-			isAllGameButtonUp = 1;
-		}
-		else if(GAME_B_BTN2 == 1)
-		{
-			btn = 2;
-			isAllGameButtonUp = 1;
-		}
-		
-		if((GAME_B_BTN1 == 0) && (GAME_B_BTN2 == 0)) //两个按钮都抬起来了
-		{
-			isAllGameButtonUp = 0;
-			
-			if(btn != 0)
+			if(GAME_B_BTN1 == 1)
 			{
-				gameBMyAnswer[0] = gameBMyAnswer[1];
-				gameBMyAnswer[1] = gameBMyAnswer[2];
-				gameBMyAnswer[2] = gameBMyAnswer[3];
-				gameBMyAnswer[3] = btn;
-
-				if((gameBMyAnswer[0] == gameBAnswer[0])&&
-				(gameBMyAnswer[1] == gameBAnswer[1])&&
-				(gameBMyAnswer[2] == gameBAnswer[2])&&
-				(gameBMyAnswer[3] == gameBAnswer[3]))//正确
-				{
-					play_mp3(0,MUSIC_304);
-					i = TICKER;	//计时器归0
-					GAME_B_LOCK = 0;//电磁锁断电
-					gameStep = 3;
-				}
+				while(GAME_B_BTN1 == 1);
+				gameBStep = 1;
+				myGameBAnswer[0] = 1;
+			}
+			if(GAME_B_BTN2 == 1)
+			{
+				while(GAME_B_BTN2 == 1);
+				gameBStep = 1;
+				myGameBAnswer[0] = 2;
+			}
+		}
+		else if(gameBStep == 1)
+		{
+			if(GAME_B_BTN1 == 1)
+			{
+				while(GAME_B_BTN1 == 1);
+				gameBStep = 2;
+				myGameBAnswer[1] = 1;
+			}
+			if(GAME_B_BTN2 == 1)
+			{
+				while(GAME_B_BTN2 == 1);
+				gameBStep = 2;
+				myGameBAnswer[1] = 2;
+			}
+		}
+		else if(gameBStep == 2)
+		{
+			if(GAME_B_BTN1 == 1)
+			{
+				while(GAME_B_BTN1 == 1);
+				gameBStep = 3;
+				myGameBAnswer[2] = 1;
+			}
+			if(GAME_B_BTN2 == 1)
+			{
+				while(GAME_B_BTN2 == 1);
+				gameBStep = 3;
+				myGameBAnswer[2] = 2;
+			}
+		}
+		else//按了3个了 检查答案
+		{
+			if((myGameBAnswer[0] == gameBAnswer[0])&&(myGameBAnswer[1] == gameBAnswer[1])&&(myGameBAnswer[2] == gameBAnswer[2])) //正确
+			{
+				play_mp3(0,MUSIC_304);
+				i = TICKER;	//计时器归0
+				GAME_B_LOCK = 0;//电磁锁断电
+				gameStep = 3;
+			}
+			else 
+			{
+				isGameBStart = 0;//重新开始
+				gameBStep = 0;
 			}
 		}
 	}
