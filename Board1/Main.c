@@ -83,6 +83,8 @@ void init()
 	GAME_C_2 = 0;
 	
 	ROOM_3_DOOR = 1;
+	
+	TO_BOARD_2 = 1;
 }
 void main()
 {
@@ -106,6 +108,7 @@ void main()
 				fiveMinutes();
 				break;
 			case 2:
+				TO_BOARD_2 = 0;
 				break;
 		}
 	}
@@ -256,6 +259,7 @@ void gameB()
 		if((GAME_B_BTN1 == 1)&&(GAME_B_BTN2 == 1)) // 4 7一起按下
 		{
 			isGameBStart = 1;//开始
+			while((GAME_B_BTN1 == 1)&&(GAME_B_BTN2 == 1));
 		}
 	}
 	else
