@@ -66,7 +66,7 @@ void init()
 	OUTPUT = 1;
 }
 
-void check()
+int check()
 {
 	int isCorrect1 = 0;
 	int isCorrect2 = 0;
@@ -130,6 +130,8 @@ void check()
 		if((isCorrect1 == 1) || (isCorrect2 == 1) || (isCorrect3 == 1) || (isCorrect4 == 1))
 		{
 			OUTPUT = 0;
+			
+			return 1;
 		}
 		else
 		{
@@ -168,6 +170,8 @@ void check()
 			isCorrect2 = 0;
 			isCorrect3 = 0;
 			isCorrect4 = 0;
+			
+			return 0;
 		}
 	}
 }
@@ -187,7 +191,10 @@ void main()
 				myAnswer[answerStep] = 1;			
 				light1 = 0;
 				answerStep++;
-				check();
+				if(check() == 1)
+				{
+					return;
+				}
 			}
 		}
 		
@@ -200,7 +207,10 @@ void main()
 				myAnswer[answerStep] = 2;
 				light2 = 0;
 				answerStep++;
-				check();
+				if(check() == 1)
+				{
+					return;
+				}
 			}
 		}
 		
@@ -213,7 +223,10 @@ void main()
 				myAnswer[answerStep] = 3;
 				light3 = 0;
 				answerStep++;
-				check();
+				if(check() == 1)
+				{
+					return;
+				}
 			}
 		}
 		
@@ -226,7 +239,10 @@ void main()
 				myAnswer[answerStep] = 4;
 				light4 = 0;
 				answerStep++;
-				check();
+				if(check() == 1)
+				{
+					return;
+				}
 			}
 		}
 		
@@ -239,7 +255,10 @@ void main()
 				myAnswer[answerStep] = 5;
 				light5 = 0;
 				answerStep++;
-				check();
+				if(check() == 1)
+				{
+					return;
+				}
 			}
 		}
 		
@@ -252,7 +271,10 @@ void main()
 				myAnswer[answerStep] = 6;
 				light6 = 0;
 				answerStep++;
-				check();
+				if(check() == 1)
+				{
+					return;
+				}
 			}
 		}
 		
@@ -265,7 +287,10 @@ void main()
 				myAnswer[answerStep] = 7;
 				light7 = 0;
 				answerStep++;
-				check();
+				if(check() == 1)
+				{
+					return;
+				}
 			}
 		}
 		
@@ -278,7 +303,10 @@ void main()
 				myAnswer[answerStep] = 8;
 				light8 = 0;
 				answerStep++;
-				check();
+				if(check() == 1)
+				{
+					return;
+				}
 			}
 		}
 		
@@ -291,8 +319,13 @@ void main()
 				myAnswer[answerStep] = 9;
 				light9 = 0;
 				answerStep++;
-				check();
+				if(check() == 1)
+				{
+					return;
+				}
 			}
 		}
 	}
+	
+	while(1);
 }
