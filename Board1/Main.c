@@ -46,7 +46,7 @@ sbit GAME_C_2 = P3^5;
 sbit ROOM_3_DOOR = P3^6;//房间3的门
 
 
-int i;
+unsigned long i;
 int five_minute_light_step = 0;
 
 void start();
@@ -341,6 +341,13 @@ void gameC()
 		LIGHT_3 = 1;
 		LIGHT_4 = 1;
 		ROOM_3_DOOR = 0;
+		
+		//1秒后关闭4个激光
+		delay_ms(1000);
+		LIGHT_1 = 1;
+		LIGHT_2 = 1;
+		LIGHT_3 = 1;
+		LIGHT_4 = 1;
 	}
 }
 
