@@ -31,6 +31,16 @@ int answer2[9] = {1,4,7,8,6,3,2,5,9};
 int answer3[9] = {1,5,9,6,3,2,4,7,8};
 int answer4[9] = {1,5,9,8,7,4,2,3,6};
 
+int isBtn1_Click = 0;
+int isBtn2_Click = 0;
+int isBtn3_Click = 0;
+int isBtn4_Click = 0;
+int isBtn5_Click = 0;
+int isBtn6_Click = 0;
+int isBtn7_Click = 0;
+int isBtn8_Click = 0;
+int isBtn9_Click = 0;
+
 void init()
 {
 	btn1 = 0;
@@ -134,6 +144,26 @@ void check()
 			light8 = 1;
 			light9 = 1;
 			
+			btn1 = 0;
+			btn2 = 0;
+			btn3 = 0;
+			btn4 = 0;
+			btn5 = 0;
+			btn6 = 0;
+			btn7 = 0;
+			btn8 = 0;
+			btn9 = 0;
+			
+			isBtn1_Click = 0;
+			isBtn2_Click = 0;
+			isBtn3_Click = 0;
+			isBtn4_Click = 0;
+			isBtn5_Click = 0;
+			isBtn6_Click = 0;
+			isBtn7_Click = 0;
+			isBtn8_Click = 0;
+			isBtn9_Click = 0;
+			
 			isCorrect1 = 0;
 			isCorrect2 = 0;
 			isCorrect3 = 0;
@@ -145,113 +175,123 @@ void check()
 void main()
 {
 	init();
-	while(1)
+	
+	while(OUTPUT == 1)
 	{
-		if(btn1 == 1)
+		if((btn1 == 1)&&(isBtn1_Click == 0))
 		{
 			delay_ms(50);
 			if(btn1 == 0)
 			{
-				myAnswer[answerStep] = 1;
+				isBtn1_Click = 1;
+				myAnswer[answerStep] = 1;			
 				light1 = 0;
-				check();
 				answerStep++;
+				check();
 			}
 		}
 		
-		if(btn2 == 1)
+		if((btn2 == 1))&&(isBtn2_Click == 0))
 		{
 			delay_ms(50);
 			if(btn2 == 0)
 			{
+				isBtn2_Click = 1;
 				myAnswer[answerStep] = 2;
 				light2 = 0;
-				check();
 				answerStep++;
+				check();
 			}
 		}
 		
-		if(btn3 == 1)
+		if((btn3 == 1))&&(isBtn3_Click == 0))
 		{
 			delay_ms(50);
 			if(btn3 == 0)
 			{
+				isBtn3_Click = 1;
 				myAnswer[answerStep] = 3;
 				light3 = 0;
-				check();
 				answerStep++;
+				check();
 			}
 		}
 		
-		if(btn4 == 1)
+		if((btn4 == 1))&&(isBtn4_Click == 0))
 		{
 			delay_ms(50);
 			if(btn4 == 0)
 			{
+				isBtn4_Click = 1;
 				myAnswer[answerStep] = 4;
 				light4 = 0;
-				check();
 				answerStep++;
+				check();
 			}
 		}
 		
-		if(btn5 == 1)
+		if((btn5 == 1))&&(isBtn5_Click == 0))
 		{
 			delay_ms(50);
 			if(btn5 == 0)
 			{
+				isBtn5_Click = 1;
 				myAnswer[answerStep] = 5;
 				light5 = 0;
-				check();
 				answerStep++;
+				check();
 			}
 		}
 		
-		if(btn6 == 1)
+		if((btn6 == 1))&&(isBtn6_Click == 0))
 		{
 			delay_ms(50);
 			if(btn6 == 0)
 			{
+				isBtn6_Click = 1;
 				myAnswer[answerStep] = 6;
 				light6 = 0;
-				check();
 				answerStep++;
+				check();
 			}
 		}
 		
-		if(btn7 == 1)
+		if((btn7 == 1))&&(isBtn7_Click == 0))
 		{
 			delay_ms(50);
 			if(btn7 == 0)
 			{
+				isBtn7_Click = 1;
 				myAnswer[answerStep] = 7;
 				light7 = 0;
-				check();
 				answerStep++;
+				check();
 			}
 		}
 		
-		if(btn8 == 1)
+		if((btn8 == 1))&&(isBtn8_Click == 0))
 		{
 			delay_ms(50);
 			if(btn8 == 0)
 			{
+				isBtn8_Click = 1;
 				myAnswer[answerStep] = 8;
 				light8 = 0;
-				check();
 				answerStep++;
+				check();
 			}
 		}
 		
-		if(btn9 == 1)
+		if((btn9 == 1))&&(isBtn9_Click == 0))
 		{
 			delay_ms(50);
 			if(btn9 == 0)
 			{
+				isBtn9_Click = 1;
 				myAnswer[answerStep] = 9;
 				light9 = 0;
-				check();
 				answerStep++;
+				check();
 			}
 		}
 	}
