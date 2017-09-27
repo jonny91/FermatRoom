@@ -191,7 +191,7 @@ void main()
 			}
 		}
 		
-		if((btn2 == 1))&&(isBtn2_Click == 0))
+		if((btn2 == 1)&&(isBtn2_Click == 0))
 		{
 			delay_ms(50);
 			if(btn2 == 0)
@@ -204,7 +204,7 @@ void main()
 			}
 		}
 		
-		if((btn3 == 1))&&(isBtn3_Click == 0))
+		if((btn3 == 1)&&(isBtn3_Click == 0))
 		{
 			delay_ms(50);
 			if(btn3 == 0)
@@ -217,7 +217,7 @@ void main()
 			}
 		}
 		
-		if((btn4 == 1))&&(isBtn4_Click == 0))
+		if((btn4 == 1)&&(isBtn4_Click == 0))
 		{
 			delay_ms(50);
 			if(btn4 == 0)
@@ -230,7 +230,7 @@ void main()
 			}
 		}
 		
-		if((btn5 == 1))&&(isBtn5_Click == 0))
+		if((btn5 == 1)&&(isBtn5_Click == 0))
 		{
 			delay_ms(50);
 			if(btn5 == 0)
@@ -243,7 +243,7 @@ void main()
 			}
 		}
 		
-		if((btn6 == 1))&&(isBtn6_Click == 0))
+		if((btn6 == 1)&&(isBtn6_Click == 0))
 		{
 			delay_ms(50);
 			if(btn6 == 0)
@@ -256,7 +256,7 @@ void main()
 			}
 		}
 		
-		if((btn7 == 1))&&(isBtn7_Click == 0))
+		if((btn7 == 1)&&(isBtn7_Click == 0))
 		{
 			delay_ms(50);
 			if(btn7 == 0)
@@ -269,7 +269,7 @@ void main()
 			}
 		}
 		
-		if((btn8 == 1))&&(isBtn8_Click == 0))
+		if((btn8 == 1)&&(isBtn8_Click == 0))
 		{
 			delay_ms(50);
 			if(btn8 == 0)
@@ -282,7 +282,7 @@ void main()
 			}
 		}
 		
-		if((btn9 == 1))&&(isBtn9_Click == 0))
+		if((btn9 == 1)&&(isBtn9_Click == 0))
 		{
 			delay_ms(50);
 			if(btn9 == 0)
