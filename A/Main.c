@@ -33,10 +33,24 @@ int answer4[9] = {1,5,9,8,7,4,2,3,6};
 
 void init()
 {
-	P0 = 0;
+	btn1 = 0;
+	btn2 = 0;
+	btn3 = 0;
+	btn4 = 0;
+	btn5 = 0;
+	btn6 = 0;
+	btn7 = 0;
+	btn8 = 0;
 	btn9 = 0;
 	
-	P1 = 1;
+	light1 = 1;
+	light2 = 1;
+	light3 = 1;
+	light4 = 1;
+	light5 = 1;
+	light6 = 1;
+	light7 = 1;
+	light8 = 1;
 	light9 = 1;
 	
 	OUTPUT = 1;
