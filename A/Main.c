@@ -130,7 +130,7 @@ int check()
 		if((isCorrect1 == 1) || (isCorrect2 == 1) || (isCorrect3 == 1) || (isCorrect4 == 1))
 		{
 			OUTPUT = 0;
-			
+			while(1);
 			return 1;
 		}
 		else
