@@ -294,8 +294,12 @@ void gameB()
 	{
 		if((GAME_B_BTN1 == 1)&&(GAME_B_BTN2 == 1)) // 4 7一起按下
 		{
-			isGameBStart = 1;//开始
-			while((GAME_B_BTN1 == 1)&&(GAME_B_BTN2 == 1));
+            delay_ms(50);
+            if((GAME_B_BTN1 == 1)&&(GAME_B_BTN2 == 1))
+            {
+                isGameBStart = 1;//开始
+                while((GAME_B_BTN1 == 1)||(GAME_B_BTN2 == 1));
+            }
 		}
 	}
 	else
