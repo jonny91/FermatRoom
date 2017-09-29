@@ -308,45 +308,69 @@ void gameB()
 		{
 			if(GAME_B_BTN1 == 1)
 			{
-				while(GAME_B_BTN1 == 1);
-				gameBStep = 1;
-				myGameBAnswer[0] = 1;
+                delay_ms(50);
+                if(GAME_B_BTN1 == 1)
+                {
+                    while(GAME_B_BTN1 == 1);
+                    gameBStep = 1;
+                    myGameBAnswer[0] = 1;
+                }
 			}
 			if(GAME_B_BTN2 == 1)
 			{
-				while(GAME_B_BTN2 == 1);
-				gameBStep = 1;
-				myGameBAnswer[0] = 2;
+                delay_ms(50);
+                if(GAME_B_BTN2 == 1)
+                {
+                    while(GAME_B_BTN2 == 1);
+                    gameBStep = 1;
+                    myGameBAnswer[0] = 2;
+                }
 			}
 		}
 		else if(gameBStep == 1)
 		{
 			if(GAME_B_BTN1 == 1)
 			{
-				while(GAME_B_BTN1 == 1);
-				gameBStep = 2;
-				myGameBAnswer[1] = 1;
+                delay_ms(50);
+                if(GAME_B_BTN1 == 1)
+                {
+                    while(GAME_B_BTN1 == 1);
+                    gameBStep = 2;
+                    myGameBAnswer[1] = 1;
+                }
 			}
 			if(GAME_B_BTN2 == 1)
 			{
-				while(GAME_B_BTN2 == 1);
-				gameBStep = 2;
-				myGameBAnswer[1] = 2;
+                delay_ms(50);
+                if(GAME_B_BTN2 == 1)
+                {
+                    while(GAME_B_BTN2 == 1);
+                    gameBStep = 2;
+                    myGameBAnswer[1] = 2;
+                }
 			}
 		}
 		else if(gameBStep == 2)
 		{
 			if(GAME_B_BTN1 == 1)
 			{
-				while(GAME_B_BTN1 == 1);
-				gameBStep = 3;
-				myGameBAnswer[2] = 1;
+                delay_ms(50);
+                if(GAME_B_BTN1 == 1)
+                {
+                    while(GAME_B_BTN1 == 1);
+                    gameBStep = 3;
+                    myGameBAnswer[2] = 1;
+                }
 			}
 			if(GAME_B_BTN2 == 1)
 			{
-				while(GAME_B_BTN2 == 1);
-				gameBStep = 3;
-				myGameBAnswer[2] = 2;
+                delay_ms(50);
+                if(GAME_B_BTN2 == 1)
+                {
+                    while(GAME_B_BTN2 == 1);
+                    gameBStep = 3;
+                    myGameBAnswer[2] = 2;
+                }
 			}
 		}
 		else//按了3个了 检查答案
