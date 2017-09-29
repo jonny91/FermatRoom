@@ -146,6 +146,8 @@ void checkLightStep()
 		LIGHT_2 = 0;
 		LIGHT_3 = 1;
 		LIGHT_4 = 1;
+		
+		play_mp3(0,MUSIC_307);
 	}
 	else if(five_minute_light_step == 3)
 	{
@@ -153,6 +155,8 @@ void checkLightStep()
 		LIGHT_2 = 0;
 		LIGHT_3 = 0;
 		LIGHT_4 = 1;
+		
+		play_mp3(0,MUSIC_307);
 	}
 	else if(five_minute_light_step == 4)
 	{
@@ -160,8 +164,12 @@ void checkLightStep()
 		LIGHT_2 = 0;
 		LIGHT_3 = 0;
 		LIGHT_4 = 0;
+		
+		play_mp3(0,MUSIC_307);
 	}
 }
+
+int isLightErrorSoundPlay = 0;
 
 //检查有没有碰到激光
 void checkTouchLight()
@@ -170,10 +178,17 @@ void checkTouchLight()
 	{
 		if(LIGHT_INPUT_1 == 0)//被挡住了
 		{
+			if(isLightErrorSoundPlay == 0)
+			{
+				isLightErrorSoundPlay = 1;
+				play_mp3(0,MUSIC_308);
+			}
+			
 			ABC_SWITCH = 0;
 		}
 		else
 		{
+			isLightErrorSoundPlay = 0;
 			ABC_SWITCH = 1;
 		}
 	}
@@ -181,10 +196,17 @@ void checkTouchLight()
 	{
 		if((LIGHT_INPUT_1 == 1) && (LIGHT_INPUT_2 == 1))
 		{
+			isLightErrorSoundPlay = 0;
 			ABC_SWITCH = 1;
 		}
 		else//被挡住了
 		{
+			if(isLightErrorSoundPlay == 0)
+			{
+				isLightErrorSoundPlay = 1;
+				play_mp3(0,MUSIC_308);
+			}
+			
 			ABC_SWITCH = 0;
 		}
 	}
@@ -192,21 +214,35 @@ void checkTouchLight()
 	{	
 		if((LIGHT_INPUT_1 == 1) && (LIGHT_INPUT_2 == 1)&&(LIGHT_INPUT_3 == 1))
 		{
+			isLightErrorSoundPlay = 0;
 			ABC_SWITCH = 1;
 		}
 		else//被挡住了
 		{
 			ABC_SWITCH = 0;
+			
+			if(isLightErrorSoundPlay == 0)
+			{
+				isLightErrorSoundPlay = 1;
+				play_mp3(0,MUSIC_308);
+			}
 		}
 	}
 	else if(five_minute_light_step == 4)
 	{
 		if((LIGHT_INPUT_1 == 1) && (LIGHT_INPUT_2 == 1)&&(LIGHT_INPUT_3 == 1)&&(LIGHT_INPUT_4 == 1))
 		{
+			isLightErrorSoundPlay = 0;
 			ABC_SWITCH = 1;
 		}
 		else//被挡住了
 		{
+			if(isLightErrorSoundPlay == 0)
+			{
+				isLightErrorSoundPlay = 1;
+				play_mp3(0,MUSIC_308);
+			}
+			
 			ABC_SWITCH = 0;
 		}
 	}
