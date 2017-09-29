@@ -180,7 +180,7 @@ void main()
 {
 	init();
 	
-	while(OUTPUT == 1)
+	while(1)
 	{
 		if((btn1 == 1)&&(isBtn1_Click == 0))
 		{
