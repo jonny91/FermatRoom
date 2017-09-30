@@ -18,7 +18,7 @@ typedef unsigned int WORD;
 //门禁输入
 sbit FROM_ROOM1 = P0^0;
 sbit ROOM_2 = P2^7;
-
+sbit LLLL = P0^7;
 sbit LIGHT_1 = P0^1;
 sbit LIGHT_2 = P0^2;
 sbit LIGHT_3 = P0^3;
@@ -46,9 +46,9 @@ sbit GAME_C_2 = P3^5;
 sbit ROOM_3_DOOR = P3^6;//房间3的门
 
 
-unsigned long i;
+int i;
 int five_minute_light_step = 0;
-
+int j;
 void start();
 void timer0();
 void fiveMinutes();
@@ -61,7 +61,7 @@ void init()
 	i = TICKER;
 	FROM_ROOM1 = 0;
 	ROOM_2 = 1;
-	
+	j = 0;
 	LIGHT_1 = 1;
 	LIGHT_2 = 1;
 	LIGHT_3 = 1;
@@ -71,7 +71,7 @@ void init()
 	LIGHT_INPUT_3 = 0;
 	LIGHT_INPUT_4 = 0;
 	ABC_SWITCH = 1;
-	
+  LLLL = 0;
 	INPUT_A = 0;
 	GAME_A_LOCK = 1;
 	
@@ -279,6 +279,7 @@ void gameA()
 		{
 			play_mp3(0,MUSIC_302);
 			i = TICKER;	//计时器归0
+			j=0;
 			GAME_A_LOCK = 0;//打开电磁锁
 			gameStep = 2;
 		}
@@ -294,12 +295,12 @@ void gameB()
 	{
 		if((GAME_B_BTN1 == 1)&&(GAME_B_BTN2 == 1)) // 4 7一起按下
 		{
-            delay_ms(50);
-            if((GAME_B_BTN1 == 1)&&(GAME_B_BTN2 == 1))
-            {
-                isGameBStart = 1;//开始
-                while((GAME_B_BTN1 == 1)||(GAME_B_BTN2 == 1));
-            }
+			delay_ms(50);
+			if((GAME_B_BTN1 == 1)&&(GAME_B_BTN2 == 1)) // 4 7一起按下
+			{
+			isGameBStart = 1;//开始
+			while((GAME_B_BTN1 == 1)||(GAME_B_BTN2 == 1));	
+			}
 		}
 	}
 	else
@@ -308,69 +309,69 @@ void gameB()
 		{
 			if(GAME_B_BTN1 == 1)
 			{
-                delay_ms(50);
-                if(GAME_B_BTN1 == 1)
-                {
-                    while(GAME_B_BTN1 == 1);
-                    gameBStep = 1;
-                    myGameBAnswer[0] = 1;
-                }
+				delay_ms(50);
+				if(GAME_B_BTN1 == 1)
+				{
+				while(GAME_B_BTN1 == 1);
+				gameBStep = 1;
+				myGameBAnswer[0] = 1;
+				}
 			}
 			if(GAME_B_BTN2 == 1)
 			{
-                delay_ms(50);
-                if(GAME_B_BTN2 == 1)
-                {
-                    while(GAME_B_BTN2 == 1);
-                    gameBStep = 1;
-                    myGameBAnswer[0] = 2;
-                }
+				delay_ms(50);
+				if(GAME_B_BTN2 == 1)
+				{
+				while(GAME_B_BTN2 == 1);
+				gameBStep = 1;
+				myGameBAnswer[0] = 2;
+				}
 			}
 		}
 		else if(gameBStep == 1)
 		{
 			if(GAME_B_BTN1 == 1)
 			{
-                delay_ms(50);
-                if(GAME_B_BTN1 == 1)
-                {
-                    while(GAME_B_BTN1 == 1);
-                    gameBStep = 2;
-                    myGameBAnswer[1] = 1;
-                }
+				delay_ms(50);
+				if(GAME_B_BTN1 == 1)
+				{
+				while(GAME_B_BTN1 == 1);
+				gameBStep = 2;
+				myGameBAnswer[1] = 1;
+				}
 			}
 			if(GAME_B_BTN2 == 1)
 			{
-                delay_ms(50);
-                if(GAME_B_BTN2 == 1)
-                {
-                    while(GAME_B_BTN2 == 1);
-                    gameBStep = 2;
-                    myGameBAnswer[1] = 2;
-                }
+				delay_ms(50);
+				if(GAME_B_BTN2 == 1)
+				{
+				while(GAME_B_BTN2 == 1);
+				gameBStep = 2;
+				myGameBAnswer[1] = 2;
+				}
 			}
 		}
 		else if(gameBStep == 2)
 		{
 			if(GAME_B_BTN1 == 1)
 			{
-                delay_ms(50);
-                if(GAME_B_BTN1 == 1)
-                {
-                    while(GAME_B_BTN1 == 1);
-                    gameBStep = 3;
-                    myGameBAnswer[2] = 1;
-                }
+				delay_ms(50);
+				if(GAME_B_BTN1 == 1)
+				{
+				while(GAME_B_BTN1 == 1);
+				gameBStep = 3;
+				myGameBAnswer[2] = 1;
+				}
 			}
 			if(GAME_B_BTN2 == 1)
 			{
-                delay_ms(50);
-                if(GAME_B_BTN2 == 1)
-                {
-                    while(GAME_B_BTN2 == 1);
-                    gameBStep = 3;
-                    myGameBAnswer[2] = 2;
-                }
+				delay_ms(50);
+				if(GAME_B_BTN2 == 1)
+				{
+				while(GAME_B_BTN2 == 1);
+				gameBStep = 3;
+				myGameBAnswer[2] = 2;
+				}
 			}
 		}
 		else//按了3个了 检查答案
@@ -379,6 +380,7 @@ void gameB()
 			{
 				play_mp3(0,MUSIC_304);
 				i = TICKER;	//计时器归0
+				j=0;
 				GAME_B_LOCK = 0;//电磁锁断电
 				gameStep = 3;
 			}
@@ -395,8 +397,11 @@ void gameC()
 {
 	if((GAME_C_1 == 1)&&(GAME_C_2 == 1))
 	{
+		delay_ms(50);
+	
 		play_mp3(0,MUSIC_305);
 		i = TICKER;	//计时器归0
+		j=0;
 		ET0 = 0;//计时器停止
 		gameStep = 4;
 		setStep(2);
@@ -412,6 +417,7 @@ void gameC()
 		LIGHT_2 = 1;
 		LIGHT_3 = 1;
 		LIGHT_4 = 1;
+		
 	}
 }
 
@@ -421,14 +427,22 @@ void Timer_Routine(void) interrupt 1
     TH0 = T1MS >> 8;                //reload timer0 high byte
 
     i--;
-
     if(i == 0)
-	{
+	{	
+		j++;	
 		i = TICKER;		
+		if(j==2)
+		{
 		//5分钟到了
 		five_minute_light_step++;
+			if(five_minute_light_step > 4)
+			{
+				five_minute_light_step = 4;
+			}
 		checkLightStep();
-    }        
+		j=0;
+		}
+   }        
 }
 
 

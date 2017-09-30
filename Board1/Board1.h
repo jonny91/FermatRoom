@@ -1,4 +1,4 @@
-code unsigned long TICKER = 60*1000*5;
+code int TICKER = 10000;
 code int gameBAnswer[3] = {1,2,2};
 code int CORRECT[10] = {1,2,1,2,2,1,2,2,1,1};
 
