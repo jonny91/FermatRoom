@@ -108,7 +108,6 @@ void main()
 				fiveMinutes();
 				break;
 			case 2:
-				TO_BOARD_2 = 0;
 				break;
 		}
 	}
@@ -397,27 +396,34 @@ void gameC()
 {
 	if((GAME_C_1 == 1)&&(GAME_C_2 == 1))
 	{
-		delay_ms(50);
-	
-		play_mp3(0,MUSIC_305);
-		i = TICKER;	//计时器归0
-		j=0;
-		ET0 = 0;//计时器停止
-		gameStep = 4;
-		setStep(2);
-		LIGHT_1 = 1;
-		LIGHT_2 = 1;
-		LIGHT_3 = 1;
-		LIGHT_4 = 1;
-		ROOM_3_DOOR = 0;
-		
-		//1秒后关闭4个激光
-		delay_ms(1000);
-		LIGHT_1 = 1;
-		LIGHT_2 = 1;
-		LIGHT_3 = 1;
-		LIGHT_4 = 1;
-		
+		+
+		if((five_minute_light_step == 0)
+		||((five_minute_light_step == 1) &&(LIGHT_INPUT_1 == 1))
+		||((five_minute_light_step == 2) &&(LIGHT_INPUT_1 == 1)&&(LIGHT_INPUT_2 == 1))
+		||((five_minute_light_step == 3) &&(LIGHT_INPUT_1 == 1)&&(LIGHT_INPUT_2 == 1)&&(LIGHT_INPUT_3 == 1))
+		||((five_minute_light_step == 4) &&(LIGHT_INPUT_1 == 1)&&(LIGHT_INPUT_2 == 1)&&(LIGHT_INPUT_3 == 1)&&(LIGHT_INPUT_4 == 1)))
+		{	
+			play_mp3(0,MUSIC_305);
+			i = TICKER;	//计时器归0
+			j=0;
+			ET0 = 0;//计时器停止
+			gameStep = 4;
+			setStep(2);
+			LIGHT_1 = 1;
+			LIGHT_2 = 1;
+			LIGHT_3 = 1;
+			LIGHT_4 = 1;
+			ROOM_3_DOOR = 0;
+			
+			TO_BOARD_2 = 0;
+			
+			//1秒后关闭4个激光
+			delay_ms(1000);
+			LIGHT_1 = 1;
+			LIGHT_2 = 1;
+			LIGHT_3 = 1;
+			LIGHT_4 = 1;
+		}
 	}
 }
 
